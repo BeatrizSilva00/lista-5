@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Exercícios de Matrizes - JavaScript</title>
+</head>
+<body>
+
+<div class="container">
+    <h1>Painel de Exercícios: Matrizes</h1>
+
+    <!-- EXERCÍCIO 1 -->
+    <div class="exercicio">
+        <h3>1. Exibir Matriz 3x3</h3>
+        <button onclick="ex1()">Gerar e Exibir</button>
+        <pre id="res1">O resultado aparecerá aqui...</pre>
+    </div>
+
+    <!-- EXERCÍCIO 2 -->
+    <div class="exercicio">
+        <h3>2. Soma de Elementos Aleatórios</h3>
+        <button onclick="ex2()">Calcular Soma</button>
+        <pre id="res2"></pre>
+    </div>
+
+    <!-- EXERCÍCIO 3 -->
+    <div class="exercicio">
+        <h3>3. Encontrar o Maior Valor (4x4)</h3>
+        <button onclick="ex3()">Verificar Maior</button>
+        <pre id="res3"></pre>
+    </div>
+
+    <!-- EXERCÍCIO 4 -->
+    <div class="exercicio">
+        <h3>4. Diagonal Principal</h3>
+        <button onclick="ex4()">Extrair Diagonal</button>
+        <pre id="res4"></pre>
+    </div>
+
+    <!-- EXERCÍCIO 5 -->
+    <div class="exercicio">
+        <h3>5. Soma de Cada Linha (3x4)</h3>
+        <button onclick="ex5()">Calcular Linhas</button>
+        <pre id="res5"></pre>
+    </div>
+
+    <!-- EXERCÍCIO 6 -->
+    <div class="exercicio">
+        <h3>6. Multiplicar por Escalar</h3>
+        <input type="number" id="inputEscalar" placeholder="Escalar" value="2">
+        <button onclick="ex6()">Multiplicar</button>
+        <pre id="res6"></pre>
+    </div>
+
+    <!-- EXERCÍCIO 7 -->
+    <div class="exercicio">
+        <h3>7. Matriz Identidade N x N</h3>
+        <input type="number" id="inputN" placeholder="N" value="3">
+        <button onclick="ex7()">Gerar Identidade</button>
+        <pre id="res7"></pre>
+    </div>
+
+    <!-- EXERCÍCIO 8 -->
+    <div class="exercicio">
+        <h3>8. Verificador Jogo da Velha (Linhas)</h3>
+        <button onclick="ex8()">Verificar Vencedor</button>
+        <pre id="res8"></pre>
+    </div>
+
+    <!-- EXERCÍCIO 9 -->
+    <div class="exercicio">
+        <h3>9. Transposição de Matriz (2x3 -> 3x2)</h3>
+        <button onclick="ex9()">Transpor</button>
+        <pre id="res9"></pre>
+    </div>
+
+    <!-- EXERCÍCIO 10 -->
+    <div class="exercicio">
+        <h3>10. Reserva de Cinema (5x5)</h3>
+        <p>Linha: <input type="number" id="lin" min="0" max="4"> 
+           Coluna: <input type="number" id="col" min="0" max="4"></p>
+        <button onclick="ex10()">Reservar</button>
+        <pre id="res10"></pre>
+    </div>
+</div>
+
+<script>
+
+    const formatMatriz = (m) => m.map(row => row.join("\t")).join("\n");
+
+    // 1
+    function ex1() {
+        let m = [[1,2,3],[4,5,6],[7,8,9]];
+        document.getElementById('res1').innerText = formatMatriz(m);
+    }
+
+    // 2
+    function ex2() {
+        let m = Array.from({length: 3}, () => Array.from({length: 3}, () => Math.floor(Math.random()*10)));
+        let soma = 0;
+        m.forEach(row => row.forEach(val => soma += val));
+        document.getElementById('res2').innerText = `Matriz:\n${formatMatriz(m)}\n\nSoma Total: ${soma}`;
+    }
+
+    // 3
+    function ex3() {
+        let m = [[10,25,3],[4,88,6],[7,15,99],[1,2,3]];
+        let maior = m[0][0];
+        m.forEach(r => r.forEach(v => { if(v > maior) maior = v; }));
+        document.getElementById('res3').innerText = `Matriz:\n${formatMatriz(m)}\n\nMaior valor: ${maior}`;
+    }
+
+    // 4
+    function ex4() {
+        let m = [[1,2,3],[4,5,6],[7,8,9]];
+        let diag = [];
+        for(let i=0; i<3; i++) diag.push(m[i][i]);
+        document.getElementById('res4').innerText = `Matriz:\n${formatMatriz(m)}\n\nDiagonal: ${diag.join(", ")}`;
+    }
+
+    // 5
+    function ex5() {
+        let m = [[1,1,1,1],[2,2,2,2],[3,3,3,3]];
+        let res = "";
+        m.forEach((row, i) => {
+            let s = row.reduce((a, b) => a + b, 0);
+            res += `Linha ${i}: ${s}\n`;
+        });
+        document.getElementById('res5').innerText = res;
+    }
+
+    // 6
+    function ex6() {
+        let esc = document.getElementById('inputEscalar').value;
+        let m = [[1,2],[3,4]];
+        let res = m.map(row => row.map(v => v * esc));
+        document.getElementById('res6').innerText = formatMatriz(res);
+    }
+
+    // 7
+    function ex7() {
+        let n = document.getElementById('inputN').value;
+        let m = [];
+        for(let i=0; i<n; i++){
+            m[i] = [];
+            for(let j=0; j<n; j++) m[i][j] = (i === j ? 1 : 0);
+        }
+        document.getElementById('res7').innerText = formatMatriz(m);
+    }
+
+    // 8
+    function ex8() {
+        let t = [["X","X","X"],["O","","O"],["","",""]];
+        let ganhou = "Ninguém venceu por linha.";
+        for(let i=0; i<3; i++){
+            if(t[i][0] && t[i][0] === t[i][1] && t[i][1] === t[i][2]) ganhou = `Jogador ${t[i][0]} venceu na linha ${i}!`;
+        }
+        document.getElementById('res8').innerText = `Tabuleiro:\n${formatMatriz(t)}\n\nResultado: ${ganhou}`;
+    }
+
+    // 9
+    function ex9() {
+        let m = [[1,2,3],[4,5,6]];
+        let t = m[0].map((_, c) => m.map(row => row[c]));
+        document.getElementById('res9').innerText = `Original:\n${formatMatriz(m)}\n\nTransposta:\n${formatMatriz(t)}`;
+    }
+
+    // 10
+    let sala = Array.from({length: 5}, () => Array(5).fill("Livre"));
+    function ex10() {
+        let l = document.getElementById('lin').value;
+        let c = document.getElementById('col').value;
+        if(l < 0 || l > 4 || c < 0 || c > 4) {
+            alert("Posição inválida!");
+            return;
+        }
+        if(sala[l][c] === "Livre") {
+            sala[l][c] = "Ocup.";
+            alert("Reservado!");
+        } else {
+            alert("Já ocupado!");
+        }
+        document.getElementById('res10').innerText = formatMatriz(sala);
+    }
+    // Inicializar mapa do cinema
+    document.getElementById('res10').innerText = formatMatriz(sala);
+</script>
+
+</body>
+</html>
